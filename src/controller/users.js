@@ -1,4 +1,6 @@
+
 const UsersModel = require('../models/users')
+const bcrypt = require('bcrypt');
 
 const getAllUsers = async (req,res) => {
     try {
@@ -30,26 +32,35 @@ const getAllUsers = async (req,res) => {
 const createNewUser = async (req,res) => {
     // console.log(req.body);
     const {body} = req;
-
-    if (!body.email || !body.name || !body.address) {
+    
+    if (!body.email || !body.name || !body.address || !body.password) {
         return res.status(400).json({
             message: 'Anda mengirimkan data yang salah'
         })
     }
 
-    try {
-        await UsersModel.createNewUser(body);
-        res.status(201).json({
-            message: 'CREATE new user success',
-            data:body
-        })
-    } catch (error) {
-        res.status(500).json({
-            message: 'Server Error',
-            serverMessage: error
-        })
+    const duplicate = await UsersModel.isUserDuplicate(body.email);
+    console.log(duplicate);
+    if (duplicate === true) {
+        return res.status(409).json({
+            message: 'Email is already in the database.',
+        });
+    } else {
+        body.password = await bcrypt.hash(body.password, 10);
+
+        try {
+            await UsersModel.createNewUser(body);
+            res.status(201).json({
+                message: 'CREATE new user success',
+                data:body
+            })
+        } catch (error) {
+            res.status(500).json({
+                message: 'Server Error',
+                serverMessage: error
+            })
+        }
     }
-    
 }
 
 const updateUser = async (req,res) => {

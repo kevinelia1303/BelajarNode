@@ -28,7 +28,7 @@ const updateUser = (body, idUser) => {
 }
 
 const createNewUser = (body) => {
-    const SQLQuery = `INSERT INTO users (Name, Email, Address) VALUES ('${body.name}', '${body.email}','${body.address}')`;
+    const SQLQuery = `INSERT INTO users (Name, Email, Address, password) VALUES ('${body.name}', '${body.email}','${body.address}','${body.password}')`;
     return dbPool.execute(SQLQuery);
 }
 
@@ -37,9 +37,60 @@ const deleteUser = (idUser) => {
     return dbPool.execute(SQLQuery);
 }
 
+const isUserDuplicate = async (email) => {
+    const SQLQuery = `SELECT COUNT(*) as count FROM users WHERE email='${email}'`;
+    const [rows] = await dbPool.execute(SQLQuery);
+    return rows[0].count > 0;
+}
+
+const validateUserCredentials = async (email, password) => {
+    const SQLQuery = `SELECT * FROM users WHERE email='${email}' AND password='${password}'`;
+    const [rows] = await dbPool.execute(SQLQuery);
+    if (rows.length > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+const getUserByEmail = async (email) => {
+    const SQLQuery = `SELECT * FROM users WHERE email='${email}'`;
+    const [rows] = await dbPool.execute(SQLQuery);
+    const pw = rows[0].Password;
+    if (rows.length > 0) {
+        console.log(rows);
+        console.log(pw);    
+        return rows;
+        return pw;
+    } else {
+        console.log(null);
+        return null;
+    }
+}
+
+const getUserByToken = async (token) => {
+    const SQLQuery = `SELECT * FROM users WHERE Token='${token}'`;
+    const [rows] = await dbPool.execute(SQLQuery);
+    const pw = rows[0].Password;
+    if (rows.length > 0) { 
+        return rows;
+    } else {
+        return null;
+    }
+}
+
+const updateTokenUser = (email, Token) => {
+    const SQLQuery = `UPDATE users SET Token='${Token}'WHERE email='${email}'`;
+    return dbPool.execute(SQLQuery);
+}
+
 module.exports = {
     getAllUsers,
     createNewUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    isUserDuplicate,
+    getUserByEmail,
+    updateTokenUser,
+    getUserByToken
 }

@@ -1,23 +1,31 @@
 require('dotenv').config()
 const PORT = process.env.PORT || 5000;
 const express = require("express");
+const cors = require('cors');
 
 const usersRoutes = require('./routes/users');
 // const UserController = require('./controller/users')
 const middlewarelogRequest = require('./middleware/logs')
 const upload = require('./middleware/multer');
-
+const verifyJWT = require('./middleware/verifyJWT');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
 // app.method(path, handler);
 
-// app.use("/", (req,res,next) => {
-//     res.send('Hello World');
-// })
+
 
 app.use(middlewarelogRequest);
+
+app.use(cors());
+
 app.use(express.json());
+
+app.use('/auth', require('./routes/auth'));
+app.use('/refresh', require('./routes/refresh'));
+
+app.use(verifyJWT);
 app.use('/assets',express.static('public/images'));
 
 app.use('/users', usersRoutes);
