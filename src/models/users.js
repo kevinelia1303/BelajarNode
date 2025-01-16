@@ -28,7 +28,7 @@ const updateUser = (body, idUser) => {
 }
 
 const createNewUser = (body) => {
-    const SQLQuery = `INSERT INTO users (Name, Email, Address, password) VALUES ('${body.name}', '${body.email}','${body.address}','${body.password}')`;
+    const SQLQuery = `INSERT INTO users (Name, Email, Username, Address, password, RoleId) VALUES ('${body.name}', '${body.email}','${body.username}','${body.address}','${body.password}',${body.RoleId})`;
     return dbPool.execute(SQLQuery);
 }
 
@@ -56,8 +56,9 @@ const validateUserCredentials = async (email, password) => {
 const getUserByEmail = async (email) => {
     const SQLQuery = `SELECT * FROM users WHERE email='${email}'`;
     const [rows] = await dbPool.execute(SQLQuery);
-    const pw = rows[0].Password;
+    
     if (rows.length > 0) {
+        const pw = rows[0].Password;
         console.log(rows);
         console.log(pw);    
         return rows;

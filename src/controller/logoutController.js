@@ -14,7 +14,7 @@ const handleLogout = (req, res) => {
     //Is refreshToken in db?
     const [foundUser] = UsersModel.getUserByToken(refreshToken);
     if (foundUser === null) {
-        res.clearCookie('jwt', { httpOnly:true });
+        res.clearCookie('jwt', { httpOnly:true, sameSite: 'None',secure: true });
         return res.sendStatus(204);
     } 
     

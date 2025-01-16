@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require('cors');
 
 const usersRoutes = require('./routes/users');
+
 // const UserController = require('./controller/users')
 const middlewarelogRequest = require('./middleware/logs')
 const upload = require('./middleware/multer');
@@ -21,6 +22,9 @@ app.use(middlewarelogRequest);
 app.use(cors());
 
 app.use(express.json());
+
+app.use('/LoginMakanGratis', require('./routes/auth_makangratis'));
+app.use('/sekolah', require('./routes/sekolah'));
 
 app.use('/auth', require('./routes/auth'));
 app.use('/refresh', require('./routes/refresh'));
