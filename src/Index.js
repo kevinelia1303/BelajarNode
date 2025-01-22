@@ -2,6 +2,8 @@ require('dotenv').config()
 const PORT = process.env.PORT || 5000;
 const express = require("express");
 const cors = require('cors');
+const corsOptions = require('./config/corsOptions');
+
 
 const usersRoutes = require('./routes/users');
 
@@ -10,6 +12,7 @@ const middlewarelogRequest = require('./middleware/logs')
 const upload = require('./middleware/multer');
 const verifyJWT = require('./middleware/verifyJWT');
 const cookieParser = require('cookie-parser');
+const credentials = require('./middleware/credentials');
 
 const app = express();
 
@@ -19,11 +22,13 @@ const app = express();
 
 app.use(middlewarelogRequest);
 
-app.use(cors());
+app.use(credentials);
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
-app.use('/LoginMakanGratis', require('./routes/auth_makangratis'));
+// app.use('/LoginMakanGratis', require('./routes/auth_makangratis'));
 app.use('/sekolah', require('./routes/sekolah'));
 
 app.use('/auth', require('./routes/auth'));

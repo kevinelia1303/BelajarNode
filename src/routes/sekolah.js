@@ -10,6 +10,8 @@ router.get('/', SekolahController.getAllSekolah);
 // // CREATE - POST
 router.post('/',SekolahController.createNewSekolah);
 
+router.get('/export', SekolahController.exportSekolahToExcel);
+
 // // UPDATE - PATCH
 // router.put('/:idSekolah', SekolahController.updateSekolah);
 
