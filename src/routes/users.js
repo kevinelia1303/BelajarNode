@@ -7,7 +7,7 @@ const verifyJWT = require('../middleware/verifyJWT')
 const router = express.Router();
 
 // CREATE -POST
-router.get('/',verifyJWT, UserController.getAllUsers);
+router.get('/',verifyJWT, UserController.getAllUsersRole);
 
 // READ - GET
 router.post('/',UserController.createNewUser);

@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model mapping_roleuser {
+  Id      Int @id @default(autoincrement())
+  UsersId Int
+  RolesId Int
+}
+
+model roleuser {
+  Id       Int     @id @default(autoincrement())
+  RoleName String  @db.VarChar(100)
+  users    users[]
+}
+
+model sekolah {
+  Id          Int     @id @default(autoincrement())
+  NamaSekolah String  @db.VarChar(255)
+  Alamat      String  @db.VarChar(255)
+  users       users[]
+}
+
+model users {
+  Id        Int       @id @default(autoincrement())
+  Name      String    @db.VarChar(225)
+  Email     String?   @db.VarChar(225)
+  Username  String?   @db.VarChar(255)
+  Address   String?   @db.VarChar(225)
+  Password  String?   @db.VarChar(225)
+  Token     String?   @db.VarChar(225)
+  RoleId    Int?
+  SekolahId Int?
+  roleuser  roleuser? @relation(fields: [RoleId], references: [Id], onDelete: Restrict, onUpdate: Restrict, map: "RoleUser")
+  sekolah   sekolah?  @relation(fields: [SekolahId], references: [Id], onDelete: Restrict, onUpdate: Restrict, map: "UserSekolah")
+
+  @@index([RoleId], map: "RoleUser")
+  @@index([SekolahId], map: "UserSekolah")
+}

@@ -1,4 +1,5 @@
 const express = require('express');
+const verifyJWT = require('../middleware/verifyJWT')
 
 const SekolahController = require('../controller/sekolahController');
 
@@ -9,6 +10,8 @@ router.get('/', SekolahController.getAllSekolah);
 
 // // CREATE - POST
 router.post('/',SekolahController.createNewSekolah);
+
+router.put('/',verifyJWT, SekolahController.updateSekolah);
 
 router.get('/export', SekolahController.exportSekolahToExcel);
 

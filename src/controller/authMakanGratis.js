@@ -37,11 +37,12 @@ const handleLoginMakanGratis = async (req, res) => {
         //     path.join(__dirname, '..', 'model', 'users.json'),
         //     JSON.stringify(usersDB.users)
         // );
-        res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None',domain:'localhost',secure: true, maxAge: 24 * 60 * 60 * 1000 });
+        res.cookie('jwt', accessToken, { maxAge: 24 * 60 * 60 * 1000 });
         res.status(200).json({ 
             IsSuccess: true, 
             "IdUser":foundUser.usersId,
-            "Role": foundUser.RoleName
+            "Role": foundUser.RoleName,
+            accessToken
         });
     }else{
         res.status(401).json({

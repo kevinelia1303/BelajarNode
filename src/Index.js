@@ -28,16 +28,17 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 
-// app.use('/LoginMakanGratis', require('./routes/auth_makangratis'));
-app.use('/sekolah', require('./routes/sekolah'));
+app.use('/LoginMakanGratis', require('./routes/auth_makangratis'));
+
 
 app.use('/auth', require('./routes/auth'));
 app.use('/refresh', require('./routes/refresh'));
 
-app.use(verifyJWT);
+// app.use(verifyJWT);
 app.use('/assets',express.static('public/images'));
 
 app.use('/users', usersRoutes);
+app.use('/sekolah', require('./routes/sekolah'));
 app.post('/upload',upload.single('photo'), (req,res) => {
     res.json({
         message: 'Upload berhasil',

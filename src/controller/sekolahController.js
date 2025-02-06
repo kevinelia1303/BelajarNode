@@ -45,7 +45,7 @@ const createNewSekolah = async (req,res) => {
     } else {
 
         try {
-            await SekolahModel.createNewSekolah(body);
+            await SekolahModel.createNewSekolah(idSekolah,body);
             res.status(201).json({
                 message: 'CREATE new sekolah success',
                 data:body
@@ -57,6 +57,28 @@ const createNewSekolah = async (req,res) => {
             })
         }
     }
+}
+
+const updateSekolah = async (req,res) => {
+    const {idSekolah} = req.query;
+    console.log(idSekolah);
+    const {body} = req;
+    try {
+        await SekolahModel.updateSekolah(idSekolah,body);
+        res.status(201).json({
+            message: 'UPDATE sekolah success',
+            data: {
+                id: idSekolah,
+                ...body
+            },
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: 'Server Error',
+            serverMessage: error
+        })
+        console.log("erorr : ",error);
+    }    
 }
 
 const exportSekolahToExcel = async (req, res) => {
@@ -99,6 +121,7 @@ const exportSekolahToExcel = async (req, res) => {
 module.exports = {
     getAllSekolah,
     createNewSekolah,
-    exportSekolahToExcel
+    exportSekolahToExcel,
+    updateSekolah
 }
 

@@ -15,8 +15,8 @@ const getAllSekolah = (startIndex, maxRecords, search, sortBy, sortOrder) => {
     return dbPool.execute(SQLQuery);
 }
 
-const updateSekolah = (id, body) => {
-    const SQLQuery = `UPDATE sekolah SET NamaSekolah = '${body.NamaSekolah}', Alamat = '${body.Alamat}' WHERE id = ${id}`;
+const updateSekolah = (idSekolah, body) => {
+    const SQLQuery = `UPDATE sekolah SET NamaSekolah = '${body.NamaSekolah}', Alamat = '${body.Alamat}' WHERE id = ${idSekolah}`;
     return dbPool.execute(SQLQuery);
 }
 
@@ -34,5 +34,7 @@ const isSekolahDuplicate = async (NamaSekolah) => {
 module.exports = {
     createNewSekolah,
     getAllSekolah,
-    isSekolahDuplicate
+    isSekolahDuplicate,
+    updateSekolah,
+    deleteSekolah
 }
